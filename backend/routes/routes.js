@@ -8,7 +8,7 @@ dotenv.config()
 const app = express();
 const User = require('../models/userSchema')
 const secretKey = process.env.secretKey
-const Authenticate_Token = require('../middlewares/token_middleware')
+const token = require('../middlewares/token_middleware')
 
 const signup_routes = require('./signup_routes')
 router.use("/signup" , signup_routes)
@@ -17,6 +17,8 @@ const suggestions_route = require('./Friend_Suggestions')
 router.use("/suggestions" , suggestions_route);
 
 
+const follow = require('./Following')
+router.use("/follow" , follow);
 
 
 
@@ -71,7 +73,7 @@ router.post("/signin" , async(req,res)=>{
 
 
 
-router.put("/update",Authenticate_Token , async(req,res)=>{
+router.put("/update",token , async(req,res)=>{
 
     try{
 
@@ -124,8 +126,36 @@ router.put("/update",Authenticate_Token , async(req,res)=>{
     }
 
 
-
 })
 
 
+
+
+router.get("/all_details" , token , async(req,res)=>{
+
+
+    try{
+
+        const user_id = req.user.User_id;
+
+        const user_details = await User.findOne({_id:user_id})
+
+        if(!user_details){
+            return res.status(400).json({
+                message:"User not found"
+            })
+        }
+
+        return res.status(200).json({
+            user_details
+        })
+
+    }
+    catch(er){
+
+        return res.status(400).json({
+            message:er
+        })
+    }
+})
 module.exports = router
