@@ -21,8 +21,12 @@ const follow = require('./Following')
 router.use("/follow" , follow);
 
 
+const data = require('./Content')
+router.use("/content",data)
 
 
+const AddorRemove = require('./DataAddorRemove')
+router.use("/add-data",AddorRemove)
 
 
 

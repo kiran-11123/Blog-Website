@@ -5,7 +5,7 @@ const token = require('../middlewares/token_middleware')
 
 
 
-follow_router.post("/add" ,token , async (req,res)=>{
+follow_router.post("/add-friend" ,token , async (req,res)=>{
 
     try{
         
@@ -44,7 +44,7 @@ follow_router.post("/add" ,token , async (req,res)=>{
 })
 
 
-follow_router.post("/remove" , token , async(req,res)=>{
+follow_router.post("/remove-friend" , token , async(req,res)=>{
 
     try{
 
