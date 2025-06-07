@@ -31,6 +31,14 @@ router.use("/add-data",AddorRemove)
 
 
 
+router.post("/token" , token , (req,res)=>{
+   res.json({ message: 'Protected route accessed!', user: req.user });
+
+})
+
+
+
+
 
 router.post("/signin" , async(req,res)=>{
      
@@ -60,7 +68,7 @@ router.post("/signin" , async(req,res)=>{
 
         return res.json({
             message:"Login Successfull.",
-            token
+            token:token
         })
     
     

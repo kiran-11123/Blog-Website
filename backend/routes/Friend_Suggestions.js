@@ -28,6 +28,8 @@ friend_router.get("/friends",token , async(req,res)=>{
             }
         }).select('_id username profile');
 
+        console.log("Suggestions:", suggestions);
+
         
         res.json(suggestions);              
 
