@@ -8,14 +8,16 @@ const Home = () => {
 
   return (
 
-    <div className='bg-slate-50 m-5 absolute'>
+    <div className >
 
     
         <Nav/>
 
-        <div className='pt-[60px] overflow-hidden'>
+        <div className='pt-[60px] overflow-hidden flex flex-col px-5 py-5 bg-slate-100 h-screen w-screen text-black text-xl font-semibold'>
 
-        </div>
+ 
+</div>
+
 
 
     </div>

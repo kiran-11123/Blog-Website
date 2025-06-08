@@ -1,6 +1,46 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 
-const Card = ({ username, profile }) => {
+const Card = ({ id ,username, profile }) => {
+
+  const[messsage,setMessage] = useState('');
+
+  const token = localStorage.getItem('token');
+  
+  async function addfriend(id){
+
+    try{
+
+    const response = await axios.post("http://localhost:3000/api/follow/add-friend",{
+       
+      userId : id
+    },{
+      headers :{
+        Authorization :`Bearer ${token}`
+      }
+    })
+
+    console.log(response);
+
+    if(response){
+     setMessage(response.data.messsage);
+     
+    }
+
+  }
+
+  catch(er){
+
+    console.log(er);
+      
+    setMessage(er);
+  }
+
+
+     
+  }
+  
+
   return (
     <div className='w-full max-w-sm bg-white flex flex-col items-center justify-center p-4 border border-gray-600 rounded-xl h-60'>
 
@@ -18,7 +58,7 @@ const Card = ({ username, profile }) => {
 
      
 
-      <button className='px-3 py-3 bg-white text-black font-semibold text-lg border-2 border-gray-400   shadow-sm rounded-lg'>
+      <button className='px-3 py-3 bg-white text-black font-semibold text-lg border-2 border-gray-400   shadow-sm rounded-lg' onClick={()=>addfriend(id=id)}>
         Add Friend
       </button>
 

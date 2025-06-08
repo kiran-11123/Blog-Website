@@ -48,34 +48,25 @@ const Suggestions = () => {
   return (
     <div className="pt-[60px] "> 
       <Nav />
-      <div >
+     <div>
+  {data.length === 0 && (
+    <h2 className='mt-5 text-center text-xl text-red-400 px-2 py-2 rounded-xl shadow-sm'>
+      No Friends Suggestions
+    </h2>
+  )}
 
-        {data.length === 0 && (
-    <h2 className='mt-5 text-center text-xl text-red-400 px-2 py-2 rounded-xl shadow-sm '>No Friends Suggestions</h2>
-            )}
+  <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-1 w-full bg-gray-100 border-2 border-black rounded-xl p-10 h-screen overflow-auto">
+    {data.map(user => (
+      <Card
+        key={user._id}
+        id={user._id}
+        username={user.username}
+        profile={user.profile}
+      />
+    ))}
+  </div>
+</div>
 
-
-                 <div className="flex flex-wrap gap-4 w-full bg-gray-100 border-2 border-black rounded-xl p-5 h-screen overflow-auto">
-
-             
-        {data.map((user) => (
-
-            
-                 <Card
-              key={user._id}
-              username={user.username}
-              profile={user.profile}
-            />
-
-          
-        ))}
-
-        </div>
-
-        
-
-       
-      </div>
     </div>
   );
 };
