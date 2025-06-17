@@ -28,6 +28,9 @@ router.use("/content",data)
 const AddorRemove = require('./DataAddorRemove')
 router.use("/add-data",AddorRemove)
 
+const content_router =require('./Content')
+router.use("/content" , content_router) 
+
 
 
 
@@ -49,7 +52,7 @@ router.post("/signin" , async(req,res)=>{
         const fetchdetails = await User.findOne({email:email})
         if(!fetchdetails) 
         {
-            return res.status(200).json({
+            return res.status(404).json({
                 message:"Email didn't Exist ."
             })
         }
@@ -57,9 +60,8 @@ router.post("/signin" , async(req,res)=>{
         const passcheck = await bcrypt.compare(password , fetchdetails.password);
 
         if(!passcheck){
-            return res.json({
-                message:"Password Didn't match"
-            })
+            return res.status(401).json({ message: "Password didn't match." });
+
         }
 
         const tokendetails = {username:fetchdetails.username , email:fetchdetails.email , mobile:fetchdetails.mobile, User_id : fetchdetails._id}
@@ -84,62 +86,64 @@ router.post("/signin" , async(req,res)=>{
 })
 
 
+router.put("/update", token, async (req, res) => {
+  try {
+    const userId = req.user.User_id;
 
-router.put("/update",token , async(req,res)=>{
+    const alldetails = {};
 
+    if ('username' in req.body) {
+      const newUsername = req.body.username;
+      const existingUser = await User.findOne({ username: newUsername });
+
+      // Only block if username is taken by another user
+      if (existingUser && existingUser._id.toString() !== userId) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+
+      alldetails.username = newUsername;
+    }
+
+    if ('email' in req.body) alldetails.email = req.body.email;
+    if ('mobile' in req.body) alldetails.mobile = req.body.mobile;
+    if ('bio' in req.body) alldetails.bio = req.body.bio;
+    if ('profile' in req.body) alldetails.profile = req.body.profile;
+
+    if ('password' in req.body && req.body.password) {
+      const hashed_password = await bcrypt.hash(req.body.password, 10);
+      alldetails.password = hashed_password;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, { $set: alldetails }, { new: true });
+
+    return res.status(200).json({
+      message: "User Details Uploaded Successfully",
+      user: updatedUser,
+    });
+  } catch (er) {
+    console.error("Update error:", er);
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+
+router.get("/getUser/:id" ,async(req,res)=>{
+      
     try{
+         const id = req.params.id;
 
-        const userId = req.user.User_id ; 
+         const response = await User.findById(id);
 
-        const alldetails = {};
-
-        if(req.body.username !==null){
-            alldetails.username = req.body.username;
-        }
-
-        if(req.body.email !==null){
-            alldetails.email = req.body.email;
-        }
-
-        if(req.body.mobile !==null){
-            alldetails.mobile = req.body.mobile;
-        }
-
-        if(req.body.password !==null){
-
-            const hashed_password = bcrypt.hash(password , 10)
-            alldetails.password = hashed_password;
-        }
-
-         
-        if(req.body.bio !==null){
-            alldetails.bio = req.body.bio;
-        }
-
-        if(req.body.profile !==null){
-            alldetails.profile = req.body.profile;
-        }
-
-
-        const update_details = await User.findByIdAndUpdate(userId , alldetails , {new:true});
-
-        return res.status(200).json({
-            message:"User Details Uploaded Successfully"
-        })
-
-
+         return res.status(200).json({
+            name:response.username
+         })
     }
-
     catch(er){
-
-        return res.json({
-            message:"Server Error"
-        })
+         res.status(404).json({
+            error:er
+         })
     }
-
-
 })
-
 
 
 

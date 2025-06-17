@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Nav from './Nav'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   
@@ -10,6 +11,9 @@ const Profile = () => {
   const[email ,setEmail] = useState('');
   const[username,setUsername] = useState('');
   const[mobile,setMobile] = useState('');
+  const[bio , setBio] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(()=>{
 
@@ -25,6 +29,8 @@ const Profile = () => {
         
        setEmail(response.data.user_details.email)
 
+       setBio(response.data.user_details.bio);
+
        setUsername(response.data.user_details.username);
        setMobile(response.data.user_details.mobile)
      }
@@ -37,6 +43,10 @@ const Profile = () => {
       getDetails();
 
   },[])
+
+  function toupdate(){
+     navigate("/update");
+  }
 
 
 
@@ -61,13 +71,13 @@ const Profile = () => {
          onClick={()=>setActiveTab('posts')}>My Posts</li>
          </ul>
          
-              <div className='p-6 flex-1 overflow-auto'>
+              <div className='p-2 flex-1 overflow-auto'>
                 {activetab === 'profile' && (
                   <div className='flex flex-1 justify-center items-start h-full w-full'>
                     <div className='shadow-lg border-2 rounded-md w-full h-full px-5 py-5  flex items-start justify-center '>
                         <form className='space-y-4'>
 
-                          <div className="mb-6">
+                          <div className="mb-2">
                                             <label className="block mb-2 text-2xl font-semibold text-gray-700">Username</label>
                                             <input
                                               type="text"
@@ -77,7 +87,9 @@ const Profile = () => {
                                             />
                                           </div>
 
-                                          <div className="mb-6">
+
+
+                                          <div className="mb-2">
                                             <label className="block mb-2 text-2xl font-semibold text-gray-700">Email</label>
                                             <input
                                               type="email"
@@ -87,7 +99,17 @@ const Profile = () => {
                                             />
                                           </div>
 
-                                          <div className="mb-10">
+                                          <div className="mb-2">
+                                            <label className="block mb-2 text-2xl font-semibold text-gray-700">Bio</label>
+                                            <input
+                                              type="text"
+                                              value={bio}
+                                              readOnly
+                                              className="w-full px-10 py-4 border rounded-lg text-lg bg-gray-50 cursor-not-allowed"
+                                            />
+                                          </div>
+
+                                          <div className="mb-3">
                                             <label className="block mb-2 text-2xl font-semibold text-gray-700">Phone</label>
                                             <input
                                               type="tel"
@@ -98,7 +120,7 @@ const Profile = () => {
                             </div>
 
 
-                            <button className='px-5 py-2 border rounded-lg text-lg bg-green-300 '>
+                            <button className='px-5 py-2 border rounded-lg text-lg bg-green-300 ' onClick={toupdate}>
                               Update Details
                             </button>
                                 

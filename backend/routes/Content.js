@@ -37,6 +37,7 @@ ContentRouter.get("/myposts",token , async(req,res)=>{
             videoBase64 = userdetails[i].video.fileData.toString('base64');
         }
         
+         
 
         formattedPosts.push({
             post_id:userdetails._id,
@@ -98,8 +99,9 @@ ContentRouter.get('/data',token , async(req,res)=>{
         
 
         formattedPosts.push({
-            post_id:userdetails._id,
-            text:userdetails.text,
+            user_id :userId,
+            post_id:userdetails[i]._id,
+            text:userdetails[i].text,
             image:imageBase64 ? `data:${userdetails[i].image.fileType};base64,${imageBase64}`:null,
             video:videoBase64 ?`data:${userdetails[i].video.fileType};base64,${videoBase64}`:null,
             createdAt:userdetails[i].createdAt

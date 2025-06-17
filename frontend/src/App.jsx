@@ -9,6 +9,8 @@ import Home from './components/Home'
 import Profile from './components/Profile'
 import Suggestions from './components/Suggestions'
 import Upload from './components/Upload'
+import Update from './components/Update'
+import Posts from './components/Posts'
 
 function App() {
  
@@ -25,7 +27,8 @@ function App() {
      <Route path="/profile" element={<Profile/>} />
      <Route path="/suggestions" element={<Suggestions />} />
      <Route path="upload" element={<Upload />} />
-  
+     <Route path="/update" element={<Update />} />
+     <Route path="/posts" element={<Posts/>} />
 
 
       
