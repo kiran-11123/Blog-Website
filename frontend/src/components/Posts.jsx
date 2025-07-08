@@ -1,15 +1,25 @@
-const Posts = ({name,  text, image, video }) => {
+const Posts = ({name, date, text, image, video }) => {
   return (
 
-   <div className="flex items-center  flex-col w-full max-w-4xl rounded-md h-80 px-10 py-10 gap-20 shadow-md bg-slate-400 " >
+   <div className="flex items-center  flex-col w-full max-w-2xl rounded-md  px-5 py-5 gap-5 shadow-md bg-slate-400 " >
          
-         <div className="text-center" > Uploaded by {name} </div>
+         <div className="text-gray-100">
+      
+           posted  by {name} 
+           <div className="text-sm">
+             on {date.substring(0,10)+" at "+ date.substring(11,19)}
+           </div>
+        
+           </div>
+           
+
+           
  
-    <div className="border rounded-lg shadow-sm p-3 max-w-sm w-full  bg-white space-y-2 mt-10 justify-center">
+    <div className="border rounded-lg shadow-sm p-3  w-full  bg-white space-y-2  ">
 
       
       {text && (
-        <p className="text-sm text-gray-800 text-center">
+        <p className="text-sm text-gray-800  font-semibold  text-start">
           {text}
         </p>
       )}

@@ -2,20 +2,55 @@ import React, { useEffect, useState } from 'react'
 import Nav from './Nav'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Posts from './Posts';
 
 const Profile = () => {
   
   const[activetab ,setActiveTab] = useState('profile');
   const token = localStorage.getItem('token');
-
   const[email ,setEmail] = useState('');
   const[username,setUsername] = useState('');
   const[mobile,setMobile] = useState('');
   const[bio , setBio] = useState('');
-
   const navigate = useNavigate();
+  const [mydatacontent , setmydatacontent] = useState([]);
+  const [message , setMessage] = useState('');
+
+
 
   useEffect(()=>{
+
+
+    
+
+    async function getMydata() {
+
+      const response1 = await axios.get("http://localhost:3000/api/content/myposts",{
+        headers :{
+          Authorization :`Bearer ${token}`
+        }
+      })
+
+      if (response1.length > 0) {
+       
+        const postsWithUsernames = await Promise.all(posts.map(async (post) => {
+          const name = await getUserName(post.user_id);
+          return {
+            ...post,
+            name
+          };
+        }));
+
+        setmydatacontent(postsWithUsernames);
+        console.log(mydatacontent);
+      } else {
+        setMessage("No Posts Yet");
+      }
+
+    }
+
+
+
 
      async function getDetails(){
        const response = await axios.get("http://localhost:3000/api/all_details",{
@@ -33,14 +68,11 @@ const Profile = () => {
 
        setUsername(response.data.user_details.username);
        setMobile(response.data.user_details.mobile)
-     }
-
-    
-
-     
+     }   
      }
 
       getDetails();
+      getMydata();
 
   },[])
 
@@ -75,7 +107,7 @@ const Profile = () => {
                 {activetab === 'profile' && (
                   <div className='flex flex-1 justify-center items-start h-full w-full'>
                     <div className='shadow-lg border-2 rounded-md w-full h-full px-5 py-5  flex items-start justify-center '>
-                        <form className='space-y-4'>
+                        <form className='space-y-4 w-full '>
 
                           <div className="mb-2">
                                             <label className="block mb-2 text-2xl font-semibold text-gray-700">Username</label>
@@ -140,10 +172,34 @@ const Profile = () => {
           {activetab==='posts' && (
                <div className='flex flex-1 justify-center items-start h-full w-full'>
                     <div className='shadow-lg border-2 rounded-md w-full h-full px-5 py-5 flex justify-center items-start'>
-                      <p>This is posts Section</p>
+                      
+
+                      {mydatacontent.length===0 && (
+                        <div> {message} </div>
+                      )}
+
+                      
+                      <div className="flex flex-col items-center gap-6 mt-10 px-4 w-full">
+                  {mydatacontent.map((record) => (
+                    
+                    <div key={record.post_id} className="w-full flex justify-center">
+                      <Posts 
+                        date = {record.createdAt}
+                        name = {username}
+                        text={record.text}
+                        image={record.image}
+                        video={record.video}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+
                     </div>
                   </div>
                   )}
+
+         
 
          </div>
 

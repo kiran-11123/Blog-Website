@@ -55,7 +55,7 @@ const Suggestions = () => {
     </h2>
   )}
 
-  <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-1 w-full bg-gray-100 border-2 border-black rounded-xl p-10 h-screen overflow-auto">
+  <div className="flex flex-wrap items-start justify-start gap-x-4 gap-y-2 w-full bg-gray-100 border-2 border-black rounded-xl p-10 h-screen overflow-auto">
     {data.map(user => (
       <Card
         key={user._id}

@@ -99,7 +99,7 @@ ContentRouter.get('/data',token , async(req,res)=>{
         
 
         formattedPosts.push({
-            user_id :userId,
+            user_id :userdetails[i].user_id,
             post_id:userdetails[i]._id,
             text:userdetails[i].text,
             image:imageBase64 ? `data:${userdetails[i].image.fileType};base64,${imageBase64}`:null,
@@ -115,7 +115,6 @@ ContentRouter.get('/data',token , async(req,res)=>{
 
 
 })
-
 
 
 

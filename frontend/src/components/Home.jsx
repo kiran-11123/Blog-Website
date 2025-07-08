@@ -83,6 +83,7 @@ const Home = () => {
                     
                     <div key={record.post_id} className="w-full flex justify-center">
                       <Posts 
+                        date = {record.createdAt}
                         name = {record.name}
                         text={record.text}
                         image={record.image}

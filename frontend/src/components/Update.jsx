@@ -47,8 +47,8 @@ const Update = () => {
     <div>
       <Nav />
 
-      <div className='min-h-screen bg-gray-200 flex items-center justify-center mt-10'>
-        <div className='bg-white p-10 rounded-2xl shadow-xl w-full max-w-lg'>
+      <div className='min-h-screen bg-gray-200 flex items-center justify-center mt-5'>
+        <div className='bg-white p-5   rounded-2xl shadow-xl w-full max-w-lg'>
           <h2 className='text-center text-2xl text-gray-700 font-bold mb-8'>Update Here</h2>
 
           <form className='space-y-4' onSubmit={(e) => { e.preventDefault(); submit(); }}>
