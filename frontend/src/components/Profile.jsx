@@ -23,31 +23,28 @@ const Profile = () => {
 
     
 
-    async function getMydata() {
+async function getMydata() {
+  try {
+    const response = await axios.get("http://localhost:3000/api/content/myposts", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      const response1 = await axios.get("http://localhost:3000/api/content/myposts",{
-        headers :{
-          Authorization :`Bearer ${token}`
-        }
-      })
+    const posts = response.data.myposts;
 
-      if (response1.length > 0) {
-       
-        const postsWithUsernames = await Promise.all(posts.map(async (post) => {
-          const name = await getUserName(post.user_id);
-          return {
-            ...post,
-            name
-          };
-        }));
-
-        setmydatacontent(postsWithUsernames);
-        console.log(mydatacontent);
-      } else {
-        setMessage("No Posts Yet");
-      }
-
+    if (posts && posts.length > 0) {
+      console.log(posts); 
+      setmydatacontent(posts); 
+    } else {
+      setMessage("No Posts Yet");
     }
+
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    setMessage("Failed to load posts");
+  }
+}
 
 
 
@@ -166,38 +163,47 @@ const Profile = () => {
                     </div>
                   </div>
                   )}
+
+{activetab === 'posts' && (
+  <div className="flex justify-center items-start h-full w-full bg-gray-50">
+    
+  
+    <div className="w-full max-w-4xl bg-white border border-gray-200 shadow-md rounded-xl p-6 mt-6 overflow-y-auto">
+       
+    
+     
+      {mydatacontent.length === 0 ? (
+        <div className="text-center text-lg font-semibold text-gray-500 py-10">
+          {message}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-6">
+          {mydatacontent.map((record) => (
+            <div key={record.post_id} className="w-full">
+              <Posts 
+                date={record.createdAt}
+                name={username}
+                text={record.text}
+                showdelete={true}
+                id={record.post_id}
+                image={record.image}
+                video={record.video}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+      
+    </div>
+  </div>
+)}
+
+ 
+
+                   
             
 
 
-          {activetab==='posts' && (
-               <div className='flex flex-1 justify-center items-start h-full w-full'>
-                    <div className='shadow-lg border-2 rounded-md w-full h-full px-5 py-5 flex justify-center items-start'>
-                      
-
-                      {mydatacontent.length===0 && (
-                        <div> {message} </div>
-                      )}
-
-                      
-                      <div className="flex flex-col items-center gap-6 mt-10 px-4 w-full">
-                  {mydatacontent.map((record) => (
-                    
-                    <div key={record.post_id} className="w-full flex justify-center">
-                      <Posts 
-                        date = {record.createdAt}
-                        name = {username}
-                        text={record.text}
-                        image={record.image}
-                        video={record.video}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-
-                    </div>
-                  </div>
-                  )}
 
          
 

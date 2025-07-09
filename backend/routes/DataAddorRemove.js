@@ -73,17 +73,15 @@ AddorRemove_Router.post("/add",token,UploadData.fields([
 
 
 
-AddorRemove_Router.delete("/remove",token , async(req,res)=>{
+AddorRemove_Router.delete("/remove" , async(req,res)=>{
 
     try{
 
-        const userId = req.user.User_id;
+        const { post_id } = req.body;
+      
+        const find_post = await upload.findOne({_id:post_id})
 
-        const id_toRemove = req.body.post_id;
-
-        if(!id_toRemove) return res.json({message : "Need Id to delete the post"})
-
-        const find_post = await upload.findOne({_id:id_toRemove})
+        console.log(find_post)
 
         if(!find_post) {
             return res.status(400).json({
@@ -91,7 +89,7 @@ AddorRemove_Router.delete("/remove",token , async(req,res)=>{
             })
         }
 
-        await upload.findByIdAndDelete(id_toRemove);
+        await upload.findByIdAndDelete(post_id);
        
         return res.status(200).json({
             message:"Post Deleted Successfully"

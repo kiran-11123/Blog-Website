@@ -40,8 +40,8 @@ ContentRouter.get("/myposts",token , async(req,res)=>{
          
 
         formattedPosts.push({
-            post_id:userdetails._id,
-            text:userdetails.text,
+            post_id:userdetails[i]._id,
+            text:userdetails[i].text,
             image:imageBase64 ? `data:${userdetails[i].image.fileType};base64,${imageBase64}`:null,
             video:videoBase64 ?`data:${userdetails[i].video.fileType};base64,${videoBase64}`:null,
             createdAt:userdetails[i].createdAt
